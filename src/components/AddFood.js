@@ -30,7 +30,7 @@ function AddFood(props) {
                             e.preventDefault();
                             setName('');
                             setPrice('');
-                            props.SetFood(uuidv4(), name, '$' + price);
+                            props.SetFood(name, '$' + price);
                         }}>
                 <div className="md:flex md:items-center mb-6">
                     <div className="md:w-1/3">

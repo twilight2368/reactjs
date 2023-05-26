@@ -29,15 +29,34 @@ function Food(props) {
     setFood(update);
   }
 
-  function SetFood(id, newName, newPrice) {
-    const newFood = {
-        id: id,
+  function SetFood(newName, newPrice) {
+      const url = 'http://localhost:3005/api/burger/';
+      const data = {
         name: newName,
         price: newPrice
-    };
-    
-    setFood([...food, newFood]);
+      }
 
+      fetch(url, {
+        method:'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+        }
+      ).then((response)=>{
+            if(!response.ok){
+              throw new Error ('Something went wrong');
+            }
+
+            return response.json();
+      })
+      .then((data)=>{
+        console.log(data);
+        setFood([...food, data.burger])
+      })
+      .catch((e)=>{
+        console.log(e);
+      })
   }
 
   return (
@@ -53,7 +72,7 @@ function Food(props) {
                                     EditFood = {EditFood}
                                 />
                     }
-                )} </>: <p>Loading.........</p>
+                )} </>: <p>Loading...</p>
         }   
 
       </div>
