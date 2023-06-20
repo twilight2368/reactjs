@@ -6,3 +6,5 @@
     font-family: 'Dongle', sans-serif;
     font-size: 18px;
 }
+
+#webpack-dev-server-client-overlay { display: none; } 

@@ -2,19 +2,31 @@ import FoodItem from '../components/FoodItem';
 import {useState , useEffect} from 'react';
 import AddFood from '../components/AddFood';
 import {v4 as uuidv4} from 'uuid';
+import { useNavigate } from 'react-router-dom';
 
 function Food(props) {
   const [food, setFood] = useState();
-
+ 
+  const navigate = useNavigate();
 
   useEffect(() => {
 
-    fetch("http://localhost:3005/api/burger/")
-      .then((response) => response.json())
+    fetch("http://localhost:3005/api/burger/", {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => {
+        if(response.status === 401){
+            navigate('/login')
+        }
+        return response.json()})
       .then((data) => {
         setFood(data.burger);
       });
   }, []);
+
 
   function EditFood(id, newName, newPrice) {
     const update = food.map(
@@ -39,7 +51,7 @@ function Food(props) {
       fetch(url, {
         method:'POST',
         headers: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
         },
         body: JSON.stringify(data)
         }

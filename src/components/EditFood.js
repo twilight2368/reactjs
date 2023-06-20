@@ -10,6 +10,7 @@ function EditFood(props) {
   
   const [name, setName] = useState(props.name);
   const [price, setPrice] = useState(props.price);
+  
   return (
     <>
       <button className='bg-red-600 rounded-3xl w-1/2 ' onClick={handleShow}>Edit</button>

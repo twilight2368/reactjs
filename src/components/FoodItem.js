@@ -11,7 +11,6 @@ function FoodItem(props) {
                 
                 <div> Name: <Link to = {"/food/" + props.id}>{props.name}</Link></div>
                 <div> Price: {props.price}</div>
-                <EditFood name = {props.name} price = {props.price} EditFood = {props.EditFood} id = {props.id} />
             </div>
         </div>
     )
