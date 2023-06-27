@@ -2,12 +2,13 @@ import FoodItem from '../components/FoodItem';
 import {useState , useEffect} from 'react';
 import AddFood from '../components/AddFood';
 import {v4 as uuidv4} from 'uuid';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation} from 'react-router-dom';
 
 function Food(props) {
   const [food, setFood] = useState();
  
   const navigate = useNavigate();
+  const location = useLocation()
 
   useEffect(() => {
 
@@ -15,15 +16,24 @@ function Food(props) {
       method: "GET",
       headers: {
         "content-type": "application/json",
+        "Authorization" : "Bearer"+ " " + localStorage.getItem('accessToken'),
       },
     })
       .then((response) => {
-        if(response.status === 401){
-            navigate('/login')
+        if (response.status === 401 || response.status === 403) {
+          navigate("/login", {
+            state : {
+                url: location.pathname,
+            }
+          },);
+          console.log(location)
         }
-        return response.json()})
+        return response.json();
+      })
       .then((data) => {
         setFood(data.burger);
+      }).catch((err)=>{
+        console.log(err);
       });
   }, []);
 
@@ -31,7 +41,7 @@ function Food(props) {
   function EditFood(id, newName, newPrice) {
     const update = food.map(
         function (e) {
-            if(id == e.id){
+            if(id === e.id){
                 return{...food, id: e.id, name: newName, price: newPrice}
             }
             return e;
